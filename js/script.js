@@ -17,7 +17,7 @@ window.onload = () => {
   let autoScrollInterval;
   let isReturning = false;
 
-  function scrollToPosition(pos, duration = 1500) {
+  function scrollToPosition(pos) {
     scrollPosition = pos;
 
     if (scrollPosition >= maxScroll) {
@@ -42,9 +42,7 @@ window.onload = () => {
       return;
     }
 
-    if (scrollPosition < 0) {
-      scrollPosition = 0;
-    }
+    if (scrollPosition < 0) scrollPosition = 0;
 
     if (!isReturning) {
       newsGroup.scrollTo({
@@ -108,11 +106,12 @@ menuToggle.addEventListener("click", () => {
   navMenu.classList.toggle("active");
   overlay.classList.toggle("active");
 
-  if (navMenu.classList.contains("active")) {
-    icon.setAttribute("name", "close-outline");
-  } else {
-    icon.setAttribute("name", "menu-outline");
-  }
+  icon.setAttribute(
+    "name",
+    navMenu.classList.contains("active")
+      ? "close-outline"
+      : "menu-outline"
+  );
 });
 
 overlay.addEventListener("click", () => {
@@ -127,33 +126,11 @@ overlay.addEventListener("click", () => {
 
 window.addEventListener("scroll", () => {
   const header = document.querySelector(".header");
-  const body = document.body;
   const headerHeight = header.offsetHeight;
 
   if (window.scrollY > headerHeight) {
     header.classList.add("fixed");
-    body.style.paddingTop = `${headerHeight}px`;
   } else {
     header.classList.remove("fixed");
-    body.style.paddingTop = 0;
   }
-});
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    const header = document.querySelector(".header");
-    const target = document.querySelector(this.getAttribute("href"));
-
-    const headerHeight = header.offsetHeight;
-
-    const position =
-      target.getBoundingClientRect().top + window.scrollY - headerHeight;
-
-    window.scrollTo({
-      top: position,
-      behavior: "smooth",
-    });
-  });
 });
