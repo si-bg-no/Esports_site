@@ -138,3 +138,22 @@ window.addEventListener("scroll", () => {
     body.style.paddingTop = 0;
   }
 });
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const header = document.querySelector(".header");
+    const target = document.querySelector(this.getAttribute("href"));
+
+    const headerHeight = header.offsetHeight;
+
+    const position =
+      target.getBoundingClientRect().top + window.scrollY - headerHeight;
+
+    window.scrollTo({
+      top: position,
+      behavior: "smooth",
+    });
+  });
+});
